@@ -1,0 +1,63 @@
+#+title:      test page
+#+date:       [2025-02-03 Mon 15:46]
+#+filetags:   :blog:
+#+identifier: 20250203T154617
+
+* Posts
+- I can access this: [[denote:20250212T094235][accessible]]
+- This is not accessible and might not even be visible, depending on ~:with-broken-links~ setting value: [[denote:20241224T204928][cooking]]
+
+* Resources
+- Denote link to an image: [[denote:20240916T220448][queens]]
+- Standard link to an image: [[file:20240916T220448--queens__blog_image.png][queens]]
+
+* Inline resources
+
+#+CAPTION: 💔
+#+ATTR_HTML: :width 200px
+#+ATTR_ORG: :width 100
+#+ATTR_HTML: :align center
+#+ATTR_ORG: :align center
+[[./20240916T220448--queens__blog_image.png]]
+
+* Dynamic resources
+
+** Gnuplot
+#+begin_src gnuplot :file (ky-publish/dresource "plots/plot.png" "plot.png") :results file :exports both
+reset
+
+set title "Putting it All Together"
+
+set xlabel "X"
+set xrange [-8:8]
+set xtics -8,2,8
+
+
+set ylabel "Y"
+set yrange [-20:70]
+set ytics -20,10,70
+
+f(x) = x**2
+g(x) = x**3
+h(x) = 10*sqrt(abs(x))
+
+plot f(x) w lp lw 1, g(x) w p lw 2, h(x) w l lw 3
+#+end_src
+
+#+RESULTS:
+[[file:plot.png]]
+
+
+
+** Jupyter/Julia
+#+BEGIN_SRC jupyter-julia :session juls :results none
+  using Plots
+#+END_SRC
+
+#+BEGIN_SRC jupyter-julia :session juls :file (ky-publish/dresource "plots/figure1.svg") :results file :exports both
+  v = rand(10, 2)
+  scatter(v[:,1], v[:,2], rasterize = 10, markersize = 5.0, figure = (size = (400, 300),))
+#+END_SRC
+
+#+CAPTION: Science!
+#+RESULTS:

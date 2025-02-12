@@ -1,0 +1,7 @@
+#+title:      accessible
+#+date:       [2025-02-12 Wed 09:42]
+#+filetags:   :blog:
+#+identifier: 20250212T094235
+
+Wonderful content goes here.
+[[denote:20250203T154617][test page]]

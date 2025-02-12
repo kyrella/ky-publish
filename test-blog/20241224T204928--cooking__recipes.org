@@ -1,0 +1,10 @@
+#+title:      cooking
+#+date:       [2024-12-24 Tue 20:49]
+#+filetags:   :recipes:
+#+identifier: 20241224T204928
+
+* Main dishes
+- [[https://www.youtube.com/watch?v=eW9xFW6lvXo][Baghali Polo]]
+
+* Deserts
+- [[https://www.youtube.com/watch?v=p-NiCtZGsG8][Deep Dish 'Pumpkin Pie']]
