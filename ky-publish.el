@@ -314,7 +314,6 @@ Return title.ext part of the filename."
 		:sitemap-filename "index.org"
 		:sitemap-style list
 		:auto-sitemap t))
-
 (defun ky-publish/make-denote-media-plist ()
 	"Minimal property setup for publishing non-page Denote files are resources."
 	`(
@@ -324,7 +323,6 @@ Return title.ext part of the filename."
 		:publishing-function ky-publish/publish-denote-media
     :exclude ".*"
     :include ,(ky-publish/filter-denote-files (ky-publish/denote-media-regexp))))
-
 (defun ky-publish/make-styles-plist (rel-src-dir)
 	"Minimal property setup for publishing style files, CSS and so on."
 	`(
@@ -338,7 +336,7 @@ Return title.ext part of the filename."
 	"Minimal property setup for publishing media files."
 	`(
     :base-directory ,(file-name-concat (denote-directory) rel-src-dir)
-    :base-extension ky-publish/media-resource-regexp
+    :base-extension ,ky-publish/media-resource-regexp
     :publishing-directory ,(ky-publish/media-destination-directory)
     :publishing-function org-publish-attachment
     :recursive t))
