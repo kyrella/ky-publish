@@ -68,15 +68,25 @@
 				org-export-with-broken-links 'mark
 				org-export-with-sub-superscripts nil
 				org-html-html5-fancy t
-				org-html-doctype "html5"))
+				org-html-doctype "html5"
+				org-html-htmlize-output-type 'css
+				org-src-fontify-natively t))
 
-(defun build-test-blog ()
-	(setq
-	 denote-directory (expand-file-name "./test-blog")
-	 ky-publish/destination-directory "/tmp/build-test-blog"
-	 ky-publish/backend 'ky-html)
-	(message "Denote dir - %s" (denote-directory))
-	(message "Output dir - %s" (ky-publish/destination-directory))
-	(set-org-export-defaults)
-	(ky-publish/publish (get-site-projects) t)
-	(message "Done!"))
+(defun ky-publish/publish (projects force)
+  (setq org-publish-project-alist projects)
+  (org-publish-all force))
+
+(defun publish ()
+  (let ((denote-directory (expand-file-name "./test-blog")))
+    (let ((ky-publish/destination-directory "/tmp/build-test-blog")
+          (ky-publish/backend 'ky-html))
+      (message ">>> Denote dir - %s" (denote-directory))
+	    (message ">>> Output dir - %s" (ky-publish/destination-directory))
+      (set-org-export-defaults)
+      (setq org-publish-project-alist (get-site-projects))
+      (org-publish-all t)
+      (message ">>> Done!"))))
+
+(publish)
+
+;; (build-test-blog)

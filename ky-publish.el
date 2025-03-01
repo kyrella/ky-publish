@@ -236,26 +236,6 @@ FILE-PATH is a relative path to a file returned by Denote."
     (`mark (format "<span class=\"unknown-link\">[UNKNOWN FILE: %s]</span>" file-path))
     (_ nil)))
 
-(defun ky-publish/export-to-file (&optional async subtreep visible-only body-only ext-plist)
-  (interactive)
-  (let* ((extension (concat
-										 (when (> (length org-html-extension) 0) ".")
-										 (or (plist-get ext-plist :html-extension)
-												 org-html-extension
-												 "html")))
-				 (file (org-export-output-file-name extension subtreep))
-				 (org-export-coding-system org-html-coding-system))
-    (org-export-to-file 'ky-html file
-      async subtreep visible-only body-only ext-plist)))
-
-(defun ky-publish/publish-denote-to-html (plist filename pub-dir)
-	(org-publish-org-to ky-publish/backend filename
-											(concat (when (> (length org-html-extension) 0) ".")
-															(or (plist-get plist :html-extension)
-																	org-html-extension
-																	"html"))
-											plist pub-dir))
-
 (defun ky--publish/setup-publish-filename (orig-fn &rest args)
   "An override for `org-export-output-file-name'.
 Instead of using full Denote-style filenames extract `title` part
@@ -275,13 +255,27 @@ ORIG-FUN/ARGS are the original function/args passed by
 					(file-name-concat output-dir (concat "index." html-ext)))
 			orig-res)))
 
-(defun ky-publish/publish (projects force)
-	"Patched `org-publish-all' function.
-Fixes filenames to be compatible with links we generate in `ky--publish/html-link'"
-  (setq org-publish-project-alist projects)
+(defun ky-publish/export-denote-to-html (&optional async subtreep visible-only body-only ext-plist)
+  (interactive)
+  (let* ((extension (concat
+										 (when (> (length org-html-extension) 0) ".")
+										 (or (plist-get ext-plist :html-extension)
+												 org-html-extension
+												 "html")))
+				 (file (ky--publish/setup-publish-filename #'org-export-output-file-name extension subtreep))
+				 (org-export-coding-system org-html-coding-system))
+    (org-export-to-file 'ky-html file
+      async subtreep visible-only body-only ext-plist)))
+
+(defun ky-publish/publish-denote-to-html (plist filename pub-dir)
   (advice-add 'org-export-output-file-name :around #'ky--publish/setup-publish-filename)
-  (org-publish-all force)
-  (advice-remove 'org-export-output-file-name #'ky--publish/setup-publish-filename))
+	(org-publish-org-to ky-publish/backend filename
+											(concat (when (> (length org-html-extension) 0) ".")
+															(or (plist-get plist :html-extension)
+																	org-html-extension
+																	"html"))
+											plist pub-dir)
+  (advice-remove  'org-export-output-file-name #'ky--publish/setup-publish-filename))
 
 (defun ky-publish/publish-denote-media (_plist filename pub-dir)
 	"Publish a denote file as a media resource.
